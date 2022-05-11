@@ -58,10 +58,20 @@ async function run() {
         });
 
         app.get('/marks', async (req, res) => {
-            const query = {};
-            const cursor = marksCollection.find(query);
-            const marks = await cursor.toArray();
-            res.send(marks);
+            if (req.query.email) {
+                const email = req.query.email;
+                const query = { email };
+                const cursor = marksCollection.find(query);
+                const marks = await cursor.toArray();
+                console.log(marks);
+                res.send(marks);
+            }
+            else {
+                const query = {};
+                const cursor = marksCollection.find(query);
+                const marks = await cursor.toArray();
+                res.send(marks);
+            }
         });
 
         app.post('/questions', async (req, res) => {
