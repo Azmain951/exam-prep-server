@@ -1,4 +1,5 @@
 const { MongoClient, ServerApiVersion } = require('mongodb');
+const ObjectId = require('mongodb').ObjectId;
 const express = require('express');
 const cors = require('cors');
 const app = express();
@@ -16,6 +17,7 @@ async function run() {
         const categoriesCollection = client.db("ExamPrep").collection("categories");
         const booksCollection = client.db("ExamPrep").collection("books");
         const questionsCollection = client.db("ExamPrep").collection("questions");
+        const marksCollection = client.db("ExamPrep").collection("marks");
 
         app.get('/categories', async (req, res) => {
             const query = {};
@@ -54,10 +56,32 @@ async function run() {
                 res.send(result);
             }
         });
+
+        app.get('/marks', async (req, res) => {
+            const query = {};
+            const cursor = marksCollection.find(query);
+            const marks = await cursor.toArray();
+            res.send(marks);
+        });
+
         app.post('/questions', async (req, res) => {
             const newQuestion = req.body;
-            console.log('adding new user', newQuestion);
+            console.log('adding new question', newQuestion);
             const result = await questionsCollection.insertOne(newQuestion);
+            res.send(result);
+        });
+
+        app.post('/marks', async (req, res) => {
+            const newScore = req.body;
+            console.log('adding new mark', newScore);
+            const result = await marksCollection.insertOne(newScore);
+            res.send(result);
+        });
+
+        app.delete('/questions/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await questionsCollection.deleteOne(query);
             res.send(result);
         });
     }
