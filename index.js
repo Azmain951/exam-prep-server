@@ -50,7 +50,7 @@ async function run() {
                 res.send(result);
             }
             if (req.query.category && req.query.no) {
-                const query = { category, bscNo: no };
+                const query = { category, bcsNo: no };
                 const cursor = questionsCollection.find(query);
                 const result = await cursor.toArray();
                 res.send(result);
