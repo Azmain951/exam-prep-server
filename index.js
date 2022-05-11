@@ -43,6 +43,7 @@ async function run() {
         app.get('/question', async (req, res) => {
             const category = req.query.category;
             const no = req.query.no;
+            console.log(category, no)
             if (req.query.category && !req.query.no) {
                 const query = { category };
                 const cursor = questionsCollection.find(query);
@@ -61,14 +62,14 @@ async function run() {
             if (req.query.email) {
                 const email = req.query.email;
                 const query = { email };
-                const cursor = marksCollection.find(query);
+                const cursor = marksCollection.find(query).sort({ 'score': 1 });
                 const marks = await cursor.toArray();
                 console.log(marks);
                 res.send(marks);
             }
             else {
                 const query = {};
-                const cursor = marksCollection.find(query);
+                const cursor = marksCollection.find(query).sort({ 'score': -1 });
                 const marks = await cursor.toArray();
                 res.send(marks);
             }
