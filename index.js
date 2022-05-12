@@ -76,10 +76,16 @@ async function run() {
         });
 
         app.post('/questions', async (req, res) => {
-            const newQuestion = req.body;
-            console.log('adding new question', newQuestion);
-            const result = await questionsCollection.insertOne(newQuestion);
-            res.send(result);
+            const email = req.query.email;
+            if (email === 'azmain.work@gmail.com') {
+                const newQuestion = req.body;
+                console.log('adding new question', newQuestion);
+                const result = await questionsCollection.insertOne(newQuestion);
+                res.send(result);
+            }
+            else {
+                res.send('Unauthorized Admin')
+            }
         });
 
         app.post('/marks', async (req, res) => {
@@ -90,10 +96,16 @@ async function run() {
         });
 
         app.delete('/questions/:id', async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) };
-            const result = await questionsCollection.deleteOne(query);
-            res.send(result);
+            const email = req.query.email;
+            if (email === 'azmain.work@gmail.com') {
+                const id = req.params.id;
+                const query = { _id: ObjectId(id) };
+                const result = await questionsCollection.deleteOne(query);
+                res.send(result);
+            }
+            else {
+                res.send('Unauthorized Admin')
+            }
         });
     }
     finally {
