@@ -62,14 +62,14 @@ async function run() {
             if (req.query.email) {
                 const email = req.query.email;
                 const query = { email };
-                const cursor = marksCollection.find(query).sort({ 'score': 1 });
+                const cursor = marksCollection.find(query);
                 const marks = await cursor.toArray();
                 console.log(marks);
                 res.send(marks);
             }
             else {
                 const query = {};
-                const cursor = marksCollection.find(query).sort({ 'score': -1 });
+                const cursor = marksCollection.find(query).sort({ 'percentage': -1 });
                 const marks = await cursor.toArray();
                 res.send(marks);
             }
