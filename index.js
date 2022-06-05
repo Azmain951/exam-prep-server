@@ -2,11 +2,16 @@ const { MongoClient, ServerApiVersion } = require('mongodb');
 const ObjectId = require('mongodb').ObjectId;
 const express = require('express');
 const cors = require('cors');
+const http = require("http");
 const app = express();
 const port = process.env.PORT || 5000;
 
 app.use(cors());
 app.use(express.json());
+
+setInterval(function () {
+    http.get("https://desolate-wildwood-64014.herokuapp.com");
+}, 300000);
 
 const uri = "mongodb+srv://dbuser1:R5K0m7Y84uCB7R2n@azmain951.txngk.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
@@ -103,9 +108,7 @@ async function run() {
                 const result = await questionsCollection.deleteOne(query);
                 res.send(result);
             }
-            else {
-                res.send('Unauthorized Admin')
-            }
+
         });
     }
     finally {
